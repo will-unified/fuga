@@ -59,10 +59,6 @@ response = product.create(product_data)
 print("Created Product:", response)
 ```
 
-## License
-
-TODO - add a licence if this is ever shared as open source
-
 ## Acknowledgments
 
 - FUGA for providing the API

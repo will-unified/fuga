@@ -1,0 +1,12 @@
+requests==2.32.3
+python-dotenv==1.0.1
+
+# Google Cloud
+google-cloud-storage==2.19.0
+
+# package
+setuptools==75.6.0
+
+# testing
+pytest==8.3.4
+responses==0.25.3

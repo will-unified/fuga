@@ -1,0 +1,24 @@
+# virtual environment
+.venv
+.venv/
+
+# environment variables
+.env
+.env/
+
+# cache
+__pycache__
+.pytest_cache
+
+.DS_Store
+
+*webhook/
+
+# files for local uploading tests
+files/
+tests/
+
+# build files
+dist/
+build/
+*.egg-info/

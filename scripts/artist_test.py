@@ -76,3 +76,41 @@ print("Delete Identifier Response:", delete_identifier_response)
 # Delete the artist
 delete_response = artist.delete()
 print("Delete Response:", delete_response)
+
+
+identifier_res = {
+    "id": 1003066330506,
+    "identifier": "412778295",
+    "issuingOrganization": {
+        "id": 1330598,
+        "name": "Apple Music",
+        "delivery_capabilities": [
+            {"id": "INSTANT_GRATIFICATION", "name": "Instant gratification"},
+            {
+                "id": "SUBSCRIPTION_STREAMING",
+                "name": "Usage rights: Allow subscription streaming",
+            },
+            {
+                "id": "TERRITORY_BASED_RELEASE_DATES",
+                "name": "Territory based release dates",
+            },
+            {"id": "ATTACHMENTS", "name": "All attachment types"},
+            {"id": "LABEL_IDENTIFIERS", "name": "Label identifiers issued by the DSP"},
+            {"id": "ARTIST_IDENTIFIER", "name": "Artist identifiers issued by the DSP"},
+            {
+                "id": "PERMANENT_DOWNLOAD",
+                "name": "Usage rights: Allow permanent download",
+            },
+            {"id": "TRACK_TERRITORIES", "name": "Track Territories"},
+            {"id": "RECEIVE_INSTRUMENTS", "name": "Receive instruments"},
+            {"id": "MIXED_MEDIA", "name": "Deliver both video and audio tracks"},
+            {"id": "METADATA_LOCALIZATION", "name": "Supports metadata localizations"},
+            {"id": "ASSET_LEVEL_RELEASE_DATES", "name": "Asset level release dates"},
+            {"id": "BOOKLET_ATTACHMENTS", "name": "Only booklet Attachments"},
+            {"id": "PRE_ORDER_ONLY", "name": "PreOrder Only"},
+            {"id": "PRE_ORDER", "name": "PreOrder"},
+            {"id": "LYRICS", "name": "Allow sending lyrics as part of a DDEX delivery"},
+        ],
+    },
+    "newForIssuingOrg": False,
+}

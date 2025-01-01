@@ -115,29 +115,37 @@ for person in persons:
     asset.add_contributor(data)
     print(f"Added Contributor: {person.person_id} to Asset {asset.asset_id}")
 
-# Fetch asset contributors
-contributors = asset.fetch_contributors()
-for contributor in contributors:
-    print(
-        f"Contributor: {contributor['id']} | {contributor['person']['name']}| {contributor['role']}"
-    )
+# # update or add contributors to the asset
+# print(f"\nUpdating contributors to the asset {asset.asset_id}...")
+# credits = [
+#     {"person": "1001377563381", "role": "DJ"},
+#     {"person": "1001584187208", "role": "DJ"},
+# ]
+# asset.create_or_update_contributors(credits)
 
-# Clear existing contributors from the asset
-asset.remove_all_contributors()
-print(f"\nRemoved all contributors from Asset {asset.asset_id} for retrying...")
+# # Fetch asset contributors
+# contributors = asset.fetch_contributors()
+# for contributor in contributors:
+#     print(
+#         f"Contributor: {contributor['id']} | {contributor['person']['name']}| {contributor['role']}"
+#     )
 
-# Re-add first 2 of contributors to the asset
-for person in persons[:2]:
-    data = {"person": person.person_id, "role": "DJ"}
-    asset.add_contributor(data)
-    print(f"Added Contributor: {person.person_id} to Asset {asset.asset_id}")
+# # Clear existing contributors from the asset
+# asset.remove_all_contributors()
+# print(f"\nRemoved all contributors from Asset {asset.asset_id} for retrying...")
 
-# Fetch asset contributors
-contributors = asset.fetch_contributors()
-for contributor in contributors:
-    print(
-        f"Contributor: {contributor['id']} | {contributor['person']['name']}| {contributor['role']}"
-    )
+# # Re-add first 2 of contributors to the asset
+# for person in persons[:2]:
+#     data = {"person": person.person_id, "role": "DJ"}
+#     asset.add_contributor(data)
+#     print(f"Added Contributor: {person.person_id} to Asset {asset.asset_id}")
+
+# # Fetch asset contributors
+# contributors = asset.fetch_contributors()
+# for contributor in contributors:
+#     print(
+#         f"Contributor: {contributor['id']} | {contributor['person']['name']}| {contributor['role']}"
+#     )
 
 # Add instrument performers to the asset
 print("\nAdding instrument performers to the asset...")
@@ -146,44 +154,52 @@ for person in persons:
     asset.add_instrument_performer(data)
     print(f"Added instrument performer: {person.person_id} to Asset {asset.asset_id}")
 
-# Fetch asset instrument performers
-instrument_performers = asset.fetch_instrument_performers()
-for instrument_performer in instrument_performers:
-    print(
-        f"Instrument performer: {instrument_performer['id']} | {instrument_performer['person']['name']}| {instrument_performer['instrument']}"
-    )
+# update or create instrument performers to the asset
+print(f"\nUpdating contributors to the asset {asset.asset_id}...")
+credits = [
+    {"person_id": "1001377563381", "instrument": "PIANO"},
+    {"person_id": "1001584187208", "instrument": "PIANO"},
+]
+asset.create_or_update_instrument_performers(credits)
 
-# Clear existing instrument performers from the asset
-asset.remove_all_instrument_performers()
-print(f"Removed all instrument performers from Asset {asset.asset_id} for testing...")
+# # Fetch asset instrument performers
+# instrument_performers = asset.fetch_instrument_performers()
+# for instrument_performer in instrument_performers:
+#     print(
+#         f"Instrument performer: {instrument_performer['id']} | {instrument_performer['person']['name']}| {instrument_performer['instrument']}"
+#     )
 
-# Clear existing publishers (song splits) from the asset
-asset.remove_all_publishers()
-print(f"\nRemoved all publishers from Asset {asset.asset_id} for testing...")
+# # Clear existing instrument performers from the asset
+# asset.remove_all_instrument_performers()
+# print(f"Removed all instrument performers from Asset {asset.asset_id} for testing...")
 
-# Create a new publishing house
-print("Creating a new publishing house...")
-publishing_house = FUGAPublishingHouse(client)
-publishing_house_data = {"name": "TEST PUBLISHER"}
-created_publisher = publishing_house.create(publishing_house_data)
-print(f"Created Publisher: {created_publisher['name']}")
+# # Clear existing publishers (song splits) from the asset
+# asset.remove_all_publishers()
+# print(f"\nRemoved all publishers from Asset {asset.asset_id} for testing...")
 
-# Add publishers (song credits) to the asset
-print("Adding publishers to the asset...")
-data = {
-    # "person_id": person.person_id,
-    "publishing_house": publishing_house.publishing_house_id,
-}
-print(f"publisher data: {data}")
-asset.add_publisher(data)
-print(f"Added publisher: {person.person_id} to Asset {asset.asset_id}")
+# # Create a new publishing house
+# print("Creating a new publishing house...")
+# publishing_house = FUGAPublishingHouse(client)
+# publishing_house_data = {"name": "TEST PUBLISHER"}
+# created_publisher = publishing_house.create(publishing_house_data)
+# print(f"Created Publisher: {created_publisher['name']}")
 
-# Fetch asset publishers (song splits)
-publishers = asset.fetch_publishers()
-for publisher in publishers:
-    print(
-        f"Publishers: {publisher['id']} | {publisher['composer_or_lyricist']}| {publisher['publishing_house']['name']}"
-    )
+# # Add publishers (song credits) to the asset
+# print("Adding publishers to the asset...")
+# data = {
+#     # "person_id": person.person_id,
+#     "publishing_house": publishing_house.publishing_house_id,
+# }
+# print(f"publisher data: {data}")
+# asset.add_publisher(data)
+# print(f"Added publisher: {person.person_id} to Asset {asset.asset_id}")
+
+# # Fetch asset publishers (song splits)
+# publishers = asset.fetch_publishers()
+# for publisher in publishers:
+#     print(
+#         f"Publishers: {publisher['id']} | {publisher['composer_or_lyricist']}| {publisher['publishing_house']['name']}"
+#     )
 
 # Delete the asset
 delete_response = asset.delete()
@@ -195,7 +211,7 @@ for person in persons:
     delete_response = person.delete()
     print(f"Deleted Person: {delete_response}")
 
-# Cleanup: Delete publishing house
-print("\nDeleting the publishing house...")
-delete_response = publishing_house.delete()
-print(f"Deleted publishing house: {delete_response}")
+# # Cleanup: Delete publishing house
+# print("\nDeleting the publishing house...")
+# delete_response = publishing_house.delete()
+# print(f"Deleted publishing house: {delete_response}")

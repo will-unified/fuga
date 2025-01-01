@@ -183,6 +183,68 @@ class FUGAAsset:
             f"/assets/{self.asset_id}/contributors/{contributor_id}",
         )
 
+    def create_or_update_contributors(self, credits: List[Dict[str, Any]]):
+        """
+        Synchronize asset credits (contributors) between the platform and FUGA.
+
+        Args:
+            credits (List[Dict[str, Any]]): A list of credit dictionaries to sync.
+                Each dictionary should have:
+                - "person" (str): The contributor's person_id.
+                - "role" (str): The role of the contributor (e.g., "Composer", "Lyricist").
+
+        Raises:
+            ValueError: If required arguments are missing.
+        """
+        print(f"Starting credit sync for asset ID: {self.asset_id}")
+
+        # Fetch existing contributors from FUGA
+        try:
+            existing_contributors = self.fetch_contributors()
+            print(
+                f"Fetched {len(existing_contributors)} existing contributors from FUGA."
+            )
+        except Exception as e:
+            print(f"Failed to fetch contributors for asset ID {self.asset_id}: {e}")
+            return
+
+        print(f"existing_contributors: {existing_contributors}")
+
+        # Convert existing contributors to a lookup dictionary
+        existing_contributors_lookup = {
+            (contributor["person"]["id"], contributor["role"]): contributor
+            for contributor in existing_contributors
+        }
+        print(f"Existing contributors lookup: {existing_contributors_lookup}")
+
+        # Step 1: Add or update contributors
+        for credit in credits:
+            key = (credit["person"], credit["role"])
+            if key in existing_contributors_lookup:
+                print(f"Contributor already exists in FUGA: {key}")
+            else:
+                try:
+                    self.add_contributor(credit)
+                    print(f"Added new contributor to FUGA: {credit}")
+                except Exception as e:
+                    print(f"Failed to add contributor {credit} to FUGA: {e}")
+
+        # Step 2: Remove contributors that are in FUGA but not in the provided credits
+        provided_credits_lookup = {
+            (credit["person"], credit["role"]) for credit in credits
+        }
+        for contributor in existing_contributors:
+            key = (contributor["person"]["id"], contributor["role"])
+            if key not in provided_credits_lookup:
+
+                try:
+                    self.remove_contributor(contributor["id"])
+                    print(f"Removed contributor from FUGA: {key}")
+                except Exception as e:
+                    print(f"Failed to remove contributor {key} from FUGA: {e}")
+
+        print(f"Credit sync completed for asset ID: {self.asset_id}")
+
     def remove_all_contributors(self) -> str:
         """
         Remove all contributors from the asset.
@@ -256,6 +318,88 @@ class FUGAAsset:
             "DELETE",
             f"/assets/{self.asset_id}/instrument_performers/{instrument_performer_id}",
         )
+
+    def create_or_update_instrument_performers(
+        self, instrument_performers: List[Dict[str, Any]]
+    ):
+        """
+        Synchronize asset instrument credits (instrument_performers) between the platform and FUGA.
+
+        Args:
+            instrument credits (List[Dict[str, Any]]): A list of credit dictionaries to sync.
+                Each dictionary should have:
+                - "person_id" (str): The instrument performer's person_id.
+                - "instrument" (str): The instrument of the instrument performer (e.g., "GUITAR", "PIANO").
+
+        Raises:
+            ValueError: If required arguments are missing.
+        """
+        print(f"Starting instrument performer sync for asset ID: {self.asset_id}")
+
+        # Fetch existing instrument performers from FUGA
+        try:
+            existing_instrument_performers = self.fetch_instrument_performers()
+            print(
+                f"Fetched {len(existing_instrument_performers)} existing instrument performers from FUGA."
+            )
+        except Exception as e:
+            print(
+                f"Failed to fetch instrument performers for asset ID {self.asset_id}: {e}"
+            )
+            return
+
+        print(f"existing_instrument_performers: {existing_instrument_performers}")
+
+        # Convert existing instrument performers to a lookup dictionary
+        existing_instrument_performers_lookup = {
+            (
+                instrument_performer["person"]["id"],
+                instrument_performer["instrument"],
+            ): instrument_performer
+            for instrument_performer in existing_instrument_performers
+        }
+        print(
+            f"Existing instrument performers lookup: {existing_instrument_performers_lookup}"
+        )
+
+        # Step 1: Add or update instrument performers
+        for instrument_performer in instrument_performers:
+            key = (
+                instrument_performer["person_id"],
+                instrument_performer["instrument"],
+            )
+            if key in existing_instrument_performers_lookup:
+                print(f"Instrument performer already exists in FUGA: {key}")
+            else:
+                try:
+                    self.add_instrument_performer(instrument_performer)
+                    print(
+                        f"Added new instrument performer to FUGA: {instrument_performer}"
+                    )
+                except Exception as e:
+                    print(
+                        f"Failed to add instrument performer {instrument_performer} to FUGA: {e}"
+                    )
+
+        # Step 2: Remove instrument performers that are in FUGA but not in the provided instrument performers
+        provided_instrument_performers_lookup = {
+            (instrument_performer["person_id"], instrument_performer["instrument"])
+            for instrument_performer in instrument_performers
+        }
+        for instrument_performer in existing_instrument_performers:
+            key = (
+                instrument_performer["person"]["id"],
+                instrument_performer["instrument"],
+            )
+            if key not in provided_instrument_performers_lookup:
+
+                try:
+                    self.remove_instrument_performer(instrument_performer["id"])
+                    print(f"Removed instrument performer from FUGA: {key}")
+                except Exception as e:
+                    print(f"Failed to remove instrument performer {key} from FUGA: {e}")
+
+        print(f"Instrument performers sync completed for asset ID: {self.asset_id}")
 
     def remove_all_instrument_performers(self) -> str:
         """

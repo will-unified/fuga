@@ -48,20 +48,22 @@ misc = FUGAMisc(client)
 # for audio_locale in audio_locales:
 #     print(audio_locale)
 
-# # Fetch all contributor roles
-# contributor_roles = misc.fetch_contributor_roles()
-# for contributor_role in contributor_roles:
-#     print(contributor_role)
+# Fetch all contributor roles
+contributor_roles = misc.fetch_contributor_roles()
+for contributor_role in contributor_roles:
+    print(contributor_role)
 
 # # Fetch all catalog tiers
 # catalog_tiers = misc.fetch_catalog_tiers()
 # for catalog_tier in catalog_tiers:
 #     print(catalog_tier)
 
-# # Fetch all instruments
-# instruments = misc.fetch_instruments()
-# for instrument in instruments:
-#     print(instrument)
+print()
+
+# Fetch all instruments
+instruments = misc.fetch_instruments()
+for instrument in instruments:
+    print(instrument)
 
 # # Fetch all territories
 # territories = misc.fetch_territories()

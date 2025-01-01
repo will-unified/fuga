@@ -218,6 +218,7 @@ class FUGAAsset:
         print(f"Existing contributors lookup: {existing_contributors_lookup}")
 
         # Step 1: Add or update contributors
+        print(f"Credits: {credits}")
         for credit in credits:
             key = (credit["person"], credit["role"])
             if key in existing_contributors_lookup:
@@ -363,6 +364,7 @@ class FUGAAsset:
         )
 
         # Step 1: Add or update instrument performers
+        print(f"instrument_performers: {instrument_performers}")
         for instrument_performer in instrument_performers:
             key = (
                 instrument_performer["person_id"],

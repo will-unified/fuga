@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="fuga_api",  # Package name
+    name="fuga",  # Package name
     version="0.1.0",  # Initial version
     author="LANKS",
     author_email="will.cuming@unifiedmusicgroup.com",

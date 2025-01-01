@@ -212,7 +212,7 @@ class FUGAAsset:
 
         # Convert existing contributors to a lookup dictionary
         existing_contributors_lookup = {
-            (contributor["person"]["id"], contributor["role"]): contributor
+            (str(contributor["person"]["id"]), contributor["role"]): contributor
             for contributor in existing_contributors
         }
         print(f"Existing contributors lookup: {existing_contributors_lookup}")
@@ -220,7 +220,7 @@ class FUGAAsset:
         # Step 1: Add or update contributors
         print(f"Credits: {credits}")
         for credit in credits:
-            key = (credit["person"], credit["role"])
+            key = (str(credit["person"]), credit["role"])
             if key in existing_contributors_lookup:
                 print(f"Contributor already exists in FUGA: {key}")
             else:
@@ -232,10 +232,10 @@ class FUGAAsset:
 
         # Step 2: Remove contributors that are in FUGA but not in the provided credits
         provided_credits_lookup = {
-            (credit["person"], credit["role"]) for credit in credits
+            (str(credit["person"]), credit["role"]) for credit in credits
         }
         for contributor in existing_contributors:
-            key = (contributor["person"]["id"], contributor["role"])
+            key = (str(contributor["person"]["id"]), contributor["role"])
             if key not in provided_credits_lookup:
 
                 try:
@@ -354,7 +354,7 @@ class FUGAAsset:
         # Convert existing instrument performers to a lookup dictionary
         existing_instrument_performers_lookup = {
             (
-                instrument_performer["person"]["id"],
+                str(instrument_performer["person"]["id"]),
                 instrument_performer["instrument"],
             ): instrument_performer
             for instrument_performer in existing_instrument_performers
@@ -367,7 +367,7 @@ class FUGAAsset:
         print(f"instrument_performers: {instrument_performers}")
         for instrument_performer in instrument_performers:
             key = (
-                instrument_performer["person_id"],
+                str(instrument_performer["person_id"]),
                 instrument_performer["instrument"],
             )
             if key in existing_instrument_performers_lookup:
@@ -385,12 +385,12 @@ class FUGAAsset:
 
         # Step 2: Remove instrument performers that are in FUGA but not in the provided instrument performers
         provided_instrument_performers_lookup = {
-            (instrument_performer["person_id"], instrument_performer["instrument"])
+            (str(instrument_performer["person_id"]), instrument_performer["instrument"])
             for instrument_performer in instrument_performers
         }
         for instrument_performer in existing_instrument_performers:
             key = (
-                instrument_performer["person"]["id"],
+                str(instrument_performer["person"]["id"]),
                 instrument_performer["instrument"],
             )
             if key not in provided_instrument_performers_lookup:

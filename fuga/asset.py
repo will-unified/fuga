@@ -327,7 +327,7 @@ class FUGAAsset:
         Synchronize asset instrument credits (instrument_performers) between the platform and FUGA.
 
         Args:
-            instrument credits (List[Dict[str, Any]]): A list of credit dictionaries to sync.
+            instrument_credits (List[Dict[str, Any]]): A list of credit dictionaries to sync.
                 Each dictionary should have:
                 - "person_id" (str): The instrument performer's person_id.
                 - "instrument" (str): The instrument of the instrument performer (e.g., "GUITAR", "PIANO").
@@ -475,6 +475,70 @@ class FUGAAsset:
             "DELETE",
             f"/assets/{self.asset_id}/publishers/{publisher_id}",
         )
+
+    def create_or_update_publishers(self, publishers: List[Dict[str, Any]]):
+        """
+        Synchronize publisher credits between the platform and FUGA.
+
+        Args:
+            publishers (List[Dict[str, Any]]): A list of publisher dictionaries to sync.
+                Each dictionary should have:
+                - "publishing_house" (str): The publisher's publishing house id.
+
+        Raises:
+            ValueError: If required arguments are missing.
+        """
+        print(f"Starting publishers sync for asset ID: {self.asset_id}")
+
+        # Fetch existing publishers from FUGA
+        try:
+            existing_publishers = self.fetch_publishers()
+            print(f"Fetched {len(existing_publishers)} existing publishers from FUGA.")
+        except Exception as e:
+            print(f"Failed to fetch publishers for asset ID {self.asset_id}: {e}")
+            return
+
+        print(f"existing_publishers: {existing_publishers}")
+
+        # Convert existing publishers to a lookup dictionary
+        existing_publishers_lookup = {
+            str(publisher["publishing_house"]["id"]): publisher
+            for publisher in existing_publishers
+        }
+        print(f"Existing publishers lookup: {existing_publishers_lookup}")
+
+        # Step 1: Add or update publishers
+        print(f"publishers: {publishers}")
+        for publisher in publishers:
+            key = str(publisher["publishing_house"])
+            if key in existing_publishers_lookup:
+                print(f"Publisher already exists in FUGA: {key}")
+            else:
+                try:
+                    self.add_publisher(publisher)
+                    print(
+                        f"Added new publisher to FUGA: {publisher['publishing_house']}"
+                    )
+                except Exception as e:
+                    print(
+                        f"Failed to add publisher {publisher['publishing_house']} to FUGA: {e}"
+                    )
+
+        # Step 2: Remove publishers that are in FUGA but not in the provided publishers
+        provided_publishers_lookup = {
+            str(publisher["publishing_house"]) for publisher in publishers
+        }
+        for publisher in existing_publishers:
+            key = str(publisher["publishing_house"])
+            if key not in provided_publishers_lookup:
+
+                try:
+                    self.remove_publisher(publisher["id"])
+                    print(f"Removed publisher from FUGA: {key}")
+                except Exception as e:
+                    print(f"Failed to remove publisher {key} from FUGA: {e}")
+
+        print(f"Publishers sync completed for asset ID: {self.asset_id}")
 
     def remove_all_publishers(self) -> str:
         """

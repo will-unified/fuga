@@ -22,71 +22,71 @@ client.login()
 # for asset in FUGAAsset.fetch_list(client, limit=1):
 #     print(asset)
 
-# # Create a new asset
-# asset = FUGAAsset(client)
-# asset_data = {
-#     "name": "TEST TRACK",
-#     "type": "TRACK",
-#     #   "isrc": "string",
-#     #   "artists": [
-#     #     {
-#     #       "id": 0,
-#     #       "primary": true
-#     #     }
-#     #   ],
-#     #   "display_artist": "string",
-#     #   "asset_version": "string",
-#     #   "asset_catalog_tier": "BACK",
-#     #   "p_line_year": 0,
-#     #   "p_line_text": "string",
-#     #   "language": "string",
-#     #   "genre": "string",
-#     #   "subgenre": 0,
-#     #   "alternate_genre": "string",
-#     #   "alternate_subgenre": 0,
-#     #   "parental_advisory": "true",
-#     #   "recording_year": 0,
-#     #   "recording_location": "string",
-#     #   "audio_recording_isrc": "string",
-#     #   "rights_holder_name": "string",
-#     #   "country_of_recording": "string",
-#     #   "country_of_comissioning": "string",
-#     #   "rights_ownership_name": "string",
-#     #   "rights_contract_begin_date": "2024-12-30",
-#     #   "rights_claim": "NONE",
-#     #   "lyrics": "string",
-#     #   "preview_start": 0,
-#     #   "preview_length": 0,
-#     #   "audio_locale": "string",
-#     #   "mfit_email_address": "string",
-#     #   "movement_title": "string",
-#     #   "movement_number": 0,
-#     #   "classical_catalog": "string",
-#     #   "key": "string",
-#     #   "work": 0,
-#     #   "video_crop_top": 0,
-#     #   "video_crop_right": 0,
-#     #   "video_crop_bottom": 0,
-#     #   "video_crop_left": 0,
-#     #   "extra_1": "string",
-#     #   "extra_2": "string",
-#     #   "extra_3": "string",
-#     #   "extra_4": "string",
-#     #   "extra_5": "string",
-#     #   "extra_6": "string",
-#     #   "extra_7": "string",
-#     #   "extra_8": "string",
-#     #   "extra_9": "2024-12-30",
-#     #   "extra_10": "2024-12-30",
-#     #   "asset_release_date": "2024-12-30",
-#     #   "ratings": [
-#     #     {
-#     #       "value": "SPOTIFY_18_PLUS"
-#     #     }
-#     #   ]
-# }
-# created_asset = asset.create(asset_data)
-# print(f"Created Asset: {created_asset['name']}")
+# Create a new asset
+asset = FUGAAsset(client)
+asset_data = {
+    "name": "TEST TRACK",
+    "type": "TRACK",
+    #   "isrc": "string",
+    #   "artists": [
+    #     {
+    #       "id": 0,
+    #       "primary": true
+    #     }
+    #   ],
+    #   "display_artist": "string",
+    #   "asset_version": "string",
+    #   "asset_catalog_tier": "BACK",
+    #   "p_line_year": 0,
+    #   "p_line_text": "string",
+    #   "language": "string",
+    #   "genre": "string",
+    #   "subgenre": 0,
+    #   "alternate_genre": "string",
+    #   "alternate_subgenre": 0,
+    #   "parental_advisory": "true",
+    #   "recording_year": 0,
+    #   "recording_location": "string",
+    #   "audio_recording_isrc": "string",
+    #   "rights_holder_name": "string",
+    #   "country_of_recording": "string",
+    #   "country_of_comissioning": "string",
+    #   "rights_ownership_name": "string",
+    #   "rights_contract_begin_date": "2024-12-30",
+    #   "rights_claim": "NONE",
+    #   "lyrics": "string",
+    #   "preview_start": 0,
+    #   "preview_length": 0,
+    #   "audio_locale": "string",
+    #   "mfit_email_address": "string",
+    #   "movement_title": "string",
+    #   "movement_number": 0,
+    #   "classical_catalog": "string",
+    #   "key": "string",
+    #   "work": 0,
+    #   "video_crop_top": 0,
+    #   "video_crop_right": 0,
+    #   "video_crop_bottom": 0,
+    #   "video_crop_left": 0,
+    #   "extra_1": "string",
+    #   "extra_2": "string",
+    #   "extra_3": "string",
+    #   "extra_4": "string",
+    #   "extra_5": "string",
+    #   "extra_6": "string",
+    #   "extra_7": "string",
+    #   "extra_8": "string",
+    #   "extra_9": "2024-12-30",
+    #   "extra_10": "2024-12-30",
+    #   "asset_release_date": "2024-12-30",
+    #   "ratings": [
+    #     {
+    #       "value": "SPOTIFY_18_PLUS"
+    #     }
+    #   ]
+}
+created_asset = asset.create(asset_data)
+print(f"Created Asset: {created_asset['name']}")
 
 # # Fetch asset details
 # asset.asset_id = response["id"]
@@ -123,13 +123,13 @@ client.login()
 # ]
 # asset.create_or_update_contributors(credits)
 
-# Fetch asset contributors
-asset_existing = FUGAAsset(client, "1003067622340")
-contributors = asset_existing.fetch_contributors()
-for contributor in contributors:
-    print(
-        f"Contributor: {contributor['id']} | {contributor['person']['name']}| {contributor['role']}"
-    )
+# # Fetch asset contributors
+# asset_existing = FUGAAsset(client, "1003067622340")
+# contributors = asset_existing.fetch_contributors()
+# for contributor in contributors:
+#     print(
+#         f"Contributor: {contributor['id']} | {contributor['person']['name']}| {contributor['role']}"
+#     )
 
 # # Clear existing contributors from the asset
 # asset.remove_all_contributors()
@@ -178,22 +178,36 @@ for contributor in contributors:
 # asset.remove_all_publishers()
 # print(f"\nRemoved all publishers from Asset {asset.asset_id} for testing...")
 
-# # Create a new publishing house
-# print("Creating a new publishing house...")
-# publishing_house = FUGAPublishingHouse(client)
-# publishing_house_data = {"name": "TEST PUBLISHER"}
-# created_publisher = publishing_house.create(publishing_house_data)
-# print(f"Created Publisher: {created_publisher['name']}")
+# Create a new publishing house
+print("Creating a new publishing house...")
+publishing_house = FUGAPublishingHouse(client)
+publishing_house_data = {"name": "TEST PUBLISHER"}
+created_publisher = publishing_house.create(publishing_house_data)
+print(f"Created Publisher: {created_publisher['name']}")
 
-# # Add publishers (song credits) to the asset
-# print("Adding publishers to the asset...")
-# data = {
-#     # "person_id": person.person_id,
-#     "publishing_house": publishing_house.publishing_house_id,
-# }
-# print(f"publisher data: {data}")
-# asset.add_publisher(data)
+# Add publishers (song credits) to the asset
+print("Adding publishers to the asset...")
+data = {
+    # "person_id": person.person_id,
+    "publishing_house": publishing_house.publishing_house_id,
+}
+print(f"publisher data: {data}")
+asset.add_publisher(data)
 # print(f"Added publisher: {person.person_id} to Asset {asset.asset_id}")
+
+# Create a second new publishing house
+print("Creating a new publishing house...")
+publishing_house2 = FUGAPublishingHouse(client)
+publishing_house_data = {"name": "TEST PUBLISHER 2"}
+created_publisher = publishing_house2.create(publishing_house_data)
+print(f"Created Publisher: {created_publisher['name']}")
+
+# Add publishers to the asset
+print("\nCreating or updating publishers to the asset...")
+data = [{"publishing_house": publishing_house2.publishing_house_id}]
+print(f"publisher data: {data}")
+asset.create_or_update_publishers(data)
+
 
 # # Fetch asset publishers (song splits)
 # publishers = asset.fetch_publishers()
@@ -202,9 +216,9 @@ for contributor in contributors:
 #         f"Publishers: {publisher['id']} | {publisher['composer_or_lyricist']}| {publisher['publishing_house']['name']}"
 #     )
 
-# # Delete the asset
-# delete_response = asset.delete()
-# print(f"\nDeleted Asset: {delete_response}")
+# Delete the asset
+delete_response = asset.delete()
+print(f"\nDeleted Asset: {delete_response}")
 
 # # Cleanup: Delete the persons
 # print("\nDeleting the person...")
@@ -212,7 +226,8 @@ for contributor in contributors:
 #     delete_response = person.delete()
 #     print(f"Deleted Person: {delete_response}")
 
-# # Cleanup: Delete publishing house
-# print("\nDeleting the publishing house...")
-# delete_response = publishing_house.delete()
-# print(f"Deleted publishing house: {delete_response}")
+# Cleanup: Delete publishing house
+print("\nDeleting the publishing house...")
+delete_response = publishing_house.delete()
+print(f"Deleted publishing house: {delete_response}")
+publishing_house2.delete()

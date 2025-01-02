@@ -317,7 +317,8 @@ class FUGAArtist:
                     )
             else:
                 try:
-                    self.create_identifier(identifier)
+                    created_identifier = self.create_identifier(identifier)
+                    identifiers_to_update_in_cm.append(created_identifier)
                     print(
                         f"Created new artist identifier in FUGA: {identifier['issuingOrganization']}"
                     )

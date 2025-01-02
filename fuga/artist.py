@@ -219,66 +219,115 @@ class FUGAArtist:
             "DELETE", f"/artists/{self.artist_id}/identifier/{identifier_id}"
         )
 
-    def create_or_update_identifiers(self, publishers: List[Dict[str, Any]]):
+    def delete_identifiers(self) -> str:
         """
-        Synchronize publisher credits between the platform and FUGA.
+        Delete all identifiers for the artist.
+
+        Returns:
+            str: The plain text response from the API.
+
+        Raises:
+            ValueError: If the artist ID is not set.
+        """
+
+        if not self.artist_id:
+            raise ValueError("artist ID is required for identifier deletion.")
+
+        # fetch all identifiers
+        identifiers = self.fetch_identifiers()
+        for identifier in identifiers:
+            self.delete_identifier(identifier["id"])
+
+        return "All identifiers deleted"
+
+    def update_or_create_identifiers(self, identifiers: List[Dict[str, Any]]):
+        """
+        Synchronize artist identifiers between the platform and FUGA.
 
         Args:
-            publishers (List[Dict[str, Any]]): A list of publisher dictionaries to sync.
+            identifiers (List[Dict[str, Any]]): A list of artist identifier dictionaries to sync.
                 Each dictionary should have:
-                - "publishing_house" (str): The publisher's publishing house id.
+                - "issuingOrganization" (str): The identifiers's platform id (i.e. Spotify platform id within FUGA).
+                - "identifier" (Optional[str]): The identifier value.
+                - "newForIssuingOrg" (bool): Whether the identifier is new for the issuing organization (i.e. new artist in Spotify).
 
         Raises:
             ValueError: If required arguments are missing.
         """
-        print(f"Starting publishers sync for asset ID: {self.asset_id}")
+        print(f"Starting artist identifier sync for artist ID: {self.artist_id}")
 
-        # Fetch existing publishers from FUGA
+        # Fetch existing artist identifiers from FUGA
         try:
-            existing_publishers = self.fetch_publishers()
-            print(f"Fetched {len(existing_publishers)} existing publishers from FUGA.")
+            existing_identifiers = self.fetch_identifiers()
+            print(
+                f"Fetched {len(existing_identifiers)} existing identifiers from FUGA."
+            )
         except Exception as e:
-            print(f"Failed to fetch publishers for asset ID {self.asset_id}: {e}")
+            print(f"Failed to fetch identifiers for artist ID {self.artist_id}: {e}")
             return
 
-        print(f"existing_publishers: {existing_publishers}")
+        print(f"existing_identifiers: {existing_identifiers}")
 
-        # Convert existing publishers to a lookup dictionary
-        existing_publishers_lookup = {
-            str(publisher["publishing_house"]["id"]): publisher
-            for publisher in existing_publishers
+        # Convert existing identifiers to a lookup dictionary
+        existing_identifiers_lookup = {
+            str(identifier["issuingOrganization"]["id"]): identifier
+            for identifier in existing_identifiers
         }
-        print(f"Existing publishers lookup: {existing_publishers_lookup}")
+        print(f"Existing identifiers lookup: {existing_identifiers_lookup}")
 
-        # Step 1: Add or update publishers
-        print(f"publishers: {publishers}")
-        for publisher in publishers:
-            key = str(publisher["publishing_house"])
-            if key in existing_publishers_lookup:
-                print(f"Publisher already exists in FUGA: {key}")
+        # create list of identifiers to update in our platform
+        identifiers_to_update_in_cm = []
+
+        # Step 1: Add or update identifiers
+        print(f"identifiers: {identifiers}")
+        for identifier in identifiers:
+            print()
+            key = str(identifier["issuingOrganization"])
+            print(f"identifier: {identifier}")
+            if key in existing_identifiers_lookup:
+                print(f"Identifier already exists in FUGA: {key}")
+                existing_identifier = existing_identifiers_lookup[key]
+                print(f"existing_identifier: {existing_identifier}")
+
+                if (
+                    identifier["newForIssuingOrg"] == True
+                    and existing_identifier["newForIssuingOrg"] == False
+                ):
+                    identifiers_to_update_in_cm.append(existing_identifier)
+                    print(
+                        f"Updating identifier {identifier['issuingOrganization']} in CM."
+                    )
+
+                elif (identifier["identifier"] or None) != (
+                    existing_identifier["identifier"] or None
+                ):
+                    try:
+                        self.update_identifier(existing_identifier["id"], identifier)
+                        print(
+                            f"Updated identifier {identifier['issuingOrganization']} in FUGA."
+                        )
+                    except Exception as e:
+                        print(
+                            f"Failed to update identifier {identifier['issuingOrganization']} in FUGA: {e}"
+                        )
+
+                else:
+                    print(
+                        f"Identifier {identifier['issuingOrganization']} is already up-to date in FUGA."
+                    )
             else:
                 try:
-                    self.add_publisher(publisher)
+                    self.create_identifier(identifier)
                     print(
-                        f"Added new publisher to FUGA: {publisher['publishing_house']}"
+                        f"Created new artist identifier in FUGA: {identifier['issuingOrganization']}"
                     )
                 except Exception as e:
                     print(
-                        f"Failed to add publisher {publisher['publishing_house']} to FUGA: {e}"
+                        f"Failed to create identifier {identifier['issuingOrganization']} in FUGA: {e}"
                     )
 
-        # Step 2: Remove publishers that are in FUGA but not in the provided publishers
-        provided_publishers_lookup = {
-            str(publisher["publishing_house"]) for publisher in publishers
+        # return the identifiers to update in CM
+        return {
+            "success": True,
+            "identifiers_to_update_in_cm": identifiers_to_update_in_cm,
         }
-        for publisher in existing_publishers:
-            key = str(publisher["publishing_house"])
-            if key not in provided_publishers_lookup:
-
-                try:
-                    self.remove_publisher(publisher["id"])
-                    print(f"Removed publisher from FUGA: {key}")
-                except Exception as e:
-                    print(f"Failed to remove publisher {key} from FUGA: {e}")
-
-        print(f"Publishers sync completed for asset ID: {self.asset_id}")

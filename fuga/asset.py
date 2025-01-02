@@ -183,7 +183,7 @@ class FUGAAsset:
             f"/assets/{self.asset_id}/contributors/{contributor_id}",
         )
 
-    def create_or_update_contributors(self, credits: List[Dict[str, Any]]):
+    def update_or_create_contributors(self, credits: List[Dict[str, Any]]):
         """
         Synchronize asset credits (contributors) between the platform and FUGA.
 
@@ -320,7 +320,7 @@ class FUGAAsset:
             f"/assets/{self.asset_id}/instrument_performers/{instrument_performer_id}",
         )
 
-    def create_or_update_instrument_performers(
+    def update_or_create_instrument_performers(
         self, instrument_performers: List[Dict[str, Any]]
     ):
         """
@@ -476,7 +476,7 @@ class FUGAAsset:
             f"/assets/{self.asset_id}/publishers/{publisher_id}",
         )
 
-    def create_or_update_publishers(self, publishers: List[Dict[str, Any]]):
+    def update_or_create_publishers(self, publishers: List[Dict[str, Any]]):
         """
         Synchronize publisher credits between the platform and FUGA.
 

@@ -121,7 +121,7 @@ print(f"Created Asset: {created_asset['name']}")
 #     {"person": "1001377563381", "role": "DJ"},
 #     {"person": "1001584187208", "role": "DJ"},
 # ]
-# asset.create_or_update_contributors(credits)
+# asset.update_or_create_contributors(credits)
 
 # # Fetch asset contributors
 # asset_existing = FUGAAsset(client, "1003067622340")
@@ -161,7 +161,7 @@ print(f"Created Asset: {created_asset['name']}")
 #     {"person_id": "1001377563381", "instrument": "PIANO"},
 #     {"person_id": "1001584187208", "instrument": "PIANO"},
 # ]
-# asset.create_or_update_instrument_performers(credits)
+# asset.update_or_create_instrument_performers(credits)
 
 # # Fetch asset instrument performers
 # instrument_performers = asset.fetch_instrument_performers()
@@ -206,7 +206,7 @@ print(f"Created Publisher: {created_publisher['name']}")
 print("\nCreating or updating publishers to the asset...")
 data = [{"publishing_house": publishing_house2.publishing_house_id}]
 print(f"publisher data: {data}")
-asset.create_or_update_publishers(data)
+asset.update_or_create_publishers(data)
 
 
 # # Fetch asset publishers (song splits)

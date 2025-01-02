@@ -320,7 +320,7 @@ class FUGAArtist:
                     created_identifier = self.create_identifier(identifier)
                     identifiers_to_update_in_cm.append(created_identifier)
                     print(
-                        f"Created new artist identifier in FUGA: {identifier['issuingOrganization']}"
+                        f"Created new artist identifier in Fuga: {identifier['issuingOrganization']}"
                     )
                 except Exception as e:
                     print(

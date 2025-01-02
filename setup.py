@@ -11,7 +11,7 @@ setup(
     description="A Python client for interacting with the FUGA API.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/will-unified/fuga-catalog-api",  # Repository URL
+    url="https://github.com/will-unified/fuga",  # Repository URL
     packages=find_packages(exclude=["scripts", "scripts.*"]),
     classifiers=[
         "Programming Language :: Python :: 3",

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="fuga",  # Package name
-    version="0.1.1",  # Initial version
+    version="0.1.2",
     author="LANKS",
     author_email="will.cuming@unifiedmusicgroup.com",
     description="A Python client for interacting with the FUGA API.",
@@ -18,7 +18,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.9",
     install_requires=[
         "requests>=2.32.3",
         "google-cloud-storage>=2.17.0",

@@ -275,34 +275,29 @@ class FUGAProduct:
 
         # Fetch current assets
         current_assets = self.fetch_assets()["asset"]
-        current_ids = {asset["id"] for asset in current_assets}
+        current_ids = [str(asset["id"]) for asset in current_assets]
 
         # Determine tracks to add, remove, and reorder
-        new_ids = {track["id"] for track in new_tracks}
-        tracks_to_add = [
-            track for track in new_tracks if track["id"] not in current_ids
-        ]
-        tracks_to_remove = [
-            asset["id"] for asset in current_assets if asset["id"] not in new_ids
-        ]
-        tracks_to_reorder = [
-            track for track in new_tracks if track["id"] in current_ids
-        ]
+        new_ids = [str(track["id"]) for track in new_tracks]
 
-        # Add new tracks
-        for track in tracks_to_add:
-            self.add_asset(FUGAAsset(self.client, track["id"]), track["sequence"])
-            print(f"Added track {track['id']} with sequence {track['sequence']}.")
+        # enumerate through both lists at the same time to find the difference
+        for i, (current, new) in enumerate(zip(current_ids, new_ids)):
+            sequence = i + 1
 
-        # Remove tracks no longer in the list
-        for track_id in tracks_to_remove:
-            self.remove_asset(track_id)
-            print(f"Removed track {track_id}.")
+            # Process if the current and new tracks are different (else skip)
+            if current != new:
 
-        # Reorder existing tracks
-        for track in tracks_to_reorder:
-            self.update_asset_sequence(track["id"], track["sequence"])
-            print(f"Reordered track {track['id']} to sequence {track['sequence']}.")
+                # if the new track is not in the current list, add/replace it
+                if new:
+                    print(f"Adding track {new} with sequence {sequence}.")
+                    self.add_asset(FUGAAsset(self.client, new), sequence)
+                    print(f"Added track {new} with sequence {sequence}.")
+
+                # if the current track is not in the new list, remove it
+                else:
+                    print(f"Removing track {current}.")
+                    self.remove_asset(current)
+                    print(f"Removed track {current}.")
 
     def add_asset(self, asset: FUGAAsset, sequence: int) -> Dict[str, Any]:
         """

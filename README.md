@@ -47,7 +47,7 @@ from fuga.api_client import FUGAClient
 from fuga.products import FUGAProduct
 
 # Initialize the client
-client = FUGAClient(API_URL, USERNAME, PASSWORD)
+client = FUGAClient(API_URL, USERNAME, PASSWORD, auth_cookie)  # auth_cookie is optional
 client.login()
 
 # Initialize the Product

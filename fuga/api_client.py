@@ -25,7 +25,13 @@ class FUGAClient:
     Handles authentication, request building, and error handling for API interactions.
     """
 
-    def __init__(self, api_url: str, username: str, password: str):
+    def __init__(
+        self,
+        api_url: str,
+        username: str,
+        password: str,
+        auth_cookie: Optional[str] = None,
+    ):
         """
         Initialize the FUGAClient instance.
 
@@ -37,22 +43,10 @@ class FUGAClient:
 
         self.api_url = api_url
         self.credentials = {"name": username, "password": password}
-        self.auth_cookie: Optional[str] = None
+        self.auth_cookie: Optional[str] = auth_cookie
         self.auth_cookie_dict: Optional[Dict[str, str]] = None
         self.user: Optional[Dict[str, Any]] = None
         self.user_id: Optional[str] = None
-
-    def _build_url(self, path: str) -> str:
-        """
-        Build the full API URL for a given endpoint path.
-
-        Args:
-            path (str): The relative path of the API endpoint.
-
-        Returns:
-            str: The full URL for the API endpoint.
-        """
-        return self.api_url + path
 
     def login(self) -> None:
         """
@@ -82,6 +76,18 @@ class FUGAClient:
         for cookie in response.cookies:
             self.auth_cookie = f"{cookie.name}={cookie.value}"
             self.auth_cookie_dict = {cookie.name: cookie.value}
+
+    def _build_url(self, path: str) -> str:
+        """
+        Build the full API URL for a given endpoint path.
+
+        Args:
+            path (str): The relative path of the API endpoint.
+
+        Returns:
+            str: The full URL for the API endpoint.
+        """
+        return self.api_url + path
 
     def request(
         self,

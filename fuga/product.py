@@ -299,28 +299,6 @@ class FUGAProduct:
                     self.remove_asset(current)
                     print(f"Removed track {current}.")
 
-    def add_asset(self, asset: FUGAAsset, sequence: int) -> Dict[str, Any]:
-        """
-        Add an asset (track) to the product in FUGA.
-
-        Args:
-            asset (FUGAAsset): The asset to add to the product.
-            sequence (int): The sequence number for the asset.
-
-        Returns:
-            Dict[str, Any]: The response from the API.
-
-        Raises:
-            ValueError: If the product ID is not set.
-        """
-        if not self.product_id:
-            raise ValueError("Product ID is required to add an asset.")
-        return self.client.request(
-            "POST",
-            f"/products/{self.product_id}/assets",
-            data={"id": asset.asset_id, "sequence": sequence},
-        )
-
     def remove_asset(self, asset_id: str) -> str:
         """
         Remove an asset (track) from the product in FUGA.
@@ -339,6 +317,24 @@ class FUGAProduct:
         return self.client.request(
             "DELETE", f"/products/{self.product_id}/assets/{asset_id}"
         )
+
+    def remove_all_assets(self) -> str:
+        """
+        Remove all assets (tracks) from the product in FUGA.
+
+        Returns:
+            str: The response from the API.
+
+        Raises:
+            ValueError: If the product ID is not set.
+        """
+        if not self.product_id:
+            raise ValueError("Product ID is required to remove all assets.")
+
+        assets = self.fetch_assets()["asset"]
+        for asset in assets:
+            self.remove_asset(asset["id"])
+        return "All assets removed."
 
     def update_asset_sequence(self, asset_id: str, sequence: int) -> Dict[str, Any]:
         """

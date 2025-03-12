@@ -20,7 +20,7 @@ client.login()
 # Create a new product
 print("Creating a new product...")
 product = FUGAProduct(client)
-product_data = {"name": "New Album", "release_date": "2024-12-31"}
+product_data = {"name": "TEST LP", "release_date": "2025-12-31"}
 created_product = product.create(product_data)
 print(f"Created Product: {created_product['name']}\n")
 
@@ -60,6 +60,12 @@ new_tracks = [
     {"id": assets[1]["id"], "sequence": 2},
     {"id": created_new_asset["id"], "sequence": 1},
 ]
+
+# remove all assets from the product
+print("\nRemoving all assets from the product...")
+product.remove_all_assets()
+
+# update the product with new tracks
 product.update_tracks(new_tracks)
 
 print("\nFetching product assets...")

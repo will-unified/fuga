@@ -8,7 +8,7 @@ setup(
     version="0.4.1",
     author="LANKS",
     author_email="will.cuming@unifiedmusicgroup.com",
-    description="A Python client for interacting with the FUGA API.",
+    description="A Python client for interacting with the FUGA API",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/will-unified/fuga",  # Repository URL

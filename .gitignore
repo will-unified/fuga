@@ -14,6 +14,9 @@ __pycache__
 
 *webhook/
 
+# output files
+output/
+
 # files for local uploading tests
 files/
 tests/

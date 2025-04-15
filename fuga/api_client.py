@@ -256,11 +256,26 @@ class FUGAClient:
                 }
 
                 # Upload the chunk
-                response = self.post_files("/upload", data=data, extra_headers=headers)
-                if response.status_code != 200:
-                    raise Exception(
-                        f"Chunk upload failed: {response.status_code} {response.text}"
-                    )
+                import time
+
+                retries = 3
+                for attempt in range(retries):
+                    try:
+                        response = self.post_files(
+                            "/upload", data=data, extra_headers=headers
+                        )
+                        if response.status_code != 200:
+                            raise Exception(
+                                f"Chunk upload failed: {response.status_code} {response.text}"
+                            )
+                        break  # success
+                    except Exception as e:
+                        logger.warning(
+                            f"Chunk upload failed on attempt {attempt + 1}: {e}"
+                        )
+                        if attempt == retries - 1:
+                            raise  # final failure
+                        time.sleep(2**attempt)  # exponential backoff
 
                 logger.info(f"Uploaded chunk {part_index + 1}/{total_chunks}")
 

@@ -617,7 +617,7 @@ class FUGAAsset:
             "id": self.asset_id,
             "type": "video",
         }
-        return self.client.upload_file(video_path, data, chunk_size=10 * 1024 * 1024)
+        return self.client.upload_file(video_path, data, chunk_size=6 * 1024 * 1024)
 
     def upload_video_preview_image(
         self, video_preview_image_id: str, image_path: str

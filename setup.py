@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="fuga",  # Package name
-    version="0.5.0",
+    version="0.5.1",  # Version of the package
     author="LANKS",
     author_email="will.cuming@unifiedmusicgroup.com",
     description="A Python client for interacting with the FUGA API.",

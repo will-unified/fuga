@@ -37,6 +37,7 @@ class FUGAClient:
         self.auth_cookie_dict: Optional[Dict[str, str]] = None
         self.user: Optional[Dict[str, Any]] = None
         self.user_id: Optional[str] = None
+        self.session = requests.Session()
 
         if not self.auth_cookie:
             if not (username and password):
@@ -114,7 +115,7 @@ class FUGAClient:
 
         try:
 
-            response = requests.request(
+            response = self.session.request(
                 method,
                 self._build_url(endpoint),
                 headers=headers,
@@ -189,7 +190,7 @@ class FUGAClient:
     ):
         headers = {"Cookie": self.auth_cookie}
         headers.update(extra_headers)
-        response = requests.post(
+        response = self.session.post(
             self._build_url(endpoint),
             headers=headers,
             files=data,

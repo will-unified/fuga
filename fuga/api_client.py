@@ -197,7 +197,12 @@ class FUGAClient:
         )
         return response
 
-    def upload_file(self, file_path: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def upload_file(
+        self,
+        file_path: str,
+        data: Dict[str, Any],
+        chunk_size: int = 5 * 1024 * 1024,  # 5MB
+    ) -> Dict[str, Any]:
         """
         Upload a file to the FUGA API in chunks and finalize the upload.
 
@@ -220,7 +225,6 @@ class FUGAClient:
         file_name = os.path.basename(file_path)
 
         # Step 3: Upload the file in chunks
-        chunk_size = 1024 * 1024 * 5  # 5MB
         file_abs_path = os.path.abspath(file_path)
         total_file_size = os.stat(file_abs_path).st_size
         total_chunks = math.ceil(total_file_size / chunk_size)
@@ -260,6 +264,8 @@ class FUGAClient:
                 logger.info(f"Uploaded chunk {part_index + 1}/{total_chunks}")
 
         file_md5sum = file_hash.hexdigest()
+
+        logger.info(f"Completed uploading all {total_chunks} chunks. Finalizing...")
 
         return self.request(
             "POST",

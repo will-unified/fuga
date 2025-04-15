@@ -28,25 +28,23 @@ class FUGAClient:
     def __init__(
         self,
         api_url: str,
-        username: str,
-        password: str,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
         auth_cookie: Optional[str] = None,
     ):
-        """
-        Initialize the FUGAClient instance.
-
-        Args:
-            api_url (str): The base URL of the FUGA API.
-            username (str): The username for authentication.
-            password (str): The password for authentication.
-        """
-
         self.api_url = api_url
-        self.credentials = {"name": username, "password": password}
         self.auth_cookie: Optional[str] = auth_cookie
         self.auth_cookie_dict: Optional[Dict[str, str]] = None
         self.user: Optional[Dict[str, Any]] = None
         self.user_id: Optional[str] = None
+
+        if not self.auth_cookie:
+            if not (username and password):
+                raise ValueError(
+                    "Either auth_cookie or username/password must be provided"
+                )
+            self.credentials = {"name": username, "password": password}
+            self.login()
 
     def login(self) -> None:
         """

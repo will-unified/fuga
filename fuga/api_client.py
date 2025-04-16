@@ -37,7 +37,11 @@ class FUGAClient:
         self.auth_cookie_dict: Optional[Dict[str, str]] = None
         self.user: Optional[Dict[str, Any]] = None
         self.user_id: Optional[str] = None
+
         self.session = requests.Session()
+        self.session.headers.update(
+            {"Cookie": self.auth_cookie, "Connection": "keep-alive"}
+        )
 
         if not self.auth_cookie:
             if not (username and password):
@@ -190,11 +194,17 @@ class FUGAClient:
     ):
         headers = {"Cookie": self.auth_cookie}
         headers.update(extra_headers)
+        # response = self.session.post(
+        #     self._build_url(endpoint),
+        #     headers=headers,
+        #     files=data,
+        #     verify=False,  # TODO - change this to True?
+        # )
         response = self.session.post(
             self._build_url(endpoint),
-            headers=headers,
+            headers=extra_headers,
             files=data,
-            verify=False,  # TODO - change this to True?
+            timeout=60,  # you can even make this longer per chunk
         )
         return response
 

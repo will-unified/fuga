@@ -633,7 +633,9 @@ class FUGAAsset:
             Dict[str, Any]: The response from the API.
         """
         if not self.asset_id:
-            raise ValueError("Asset ID is required to upload a video preview image.")
+            raise ValueError(
+                "Asset ID is required to upload a video preview image to Fuga."
+            )
         data = {
             "id": video_preview_image_id,
             "type": "image_preview_image",

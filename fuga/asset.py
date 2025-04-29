@@ -636,6 +636,6 @@ class FUGAAsset:
             raise ValueError("Asset ID is required to upload a video preview image.")
         data = {
             "id": video_preview_image_id,
-            "type": "image",
+            "type": "image_preview_image",
         }
         return self.client.upload_file(image_path, data)
